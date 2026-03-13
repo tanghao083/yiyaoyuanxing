@@ -38,10 +38,12 @@ class Pagination {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const pageText = link.textContent.trim();
+                const hasChevronLeft = link.querySelector('.fa-chevron-left');
+                const hasChevronRight = link.querySelector('.fa-chevron-right');
                 
-                if (pageText === '上一页') {
+                if (pageText === '上一页' || hasChevronLeft) {
                     this.goToPage(this.currentPage - 1);
-                } else if (pageText === '下一页') {
+                } else if (pageText === '下一页' || hasChevronRight) {
                     this.goToPage(this.currentPage + 1);
                 } else if (!isNaN(pageText)) {
                     this.goToPage(parseInt(pageText));
@@ -62,8 +64,10 @@ class Pagination {
         const links = this.container.querySelectorAll('a');
         links.forEach(link => {
             const pageText = link.textContent.trim();
+            const hasChevronLeft = link.querySelector('.fa-chevron-left');
+            const hasChevronRight = link.querySelector('.fa-chevron-right');
             
-            if (!isNaN(pageText)) {
+            if (!isNaN(pageText) && !hasChevronLeft && !hasChevronRight) {
                 const pageNum = parseInt(pageText);
                 if (pageNum === this.currentPage) {
                     link.classList.remove('bg-white', 'text-gray-700', 'hover:bg-gray-50');

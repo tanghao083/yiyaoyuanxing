@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">用户管理</h2>
+            </div>
+
+            <!-- 搜索和筛选 -->
+            <div class="bg-white p-4 rounded-lg shadow-card mb-6">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入用户名">
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">联系人</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入联系人">
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">分类</label>
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                            <option value="">全部分类</option>
+                            <option value="medical-device">医疗器械</option>
+                            <option value="medical-equipment">医疗设备</option>
+                            <option value="pharmaceutical">医药</option>
+                        </select>
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                            <option value="">全部状态</option>
+                            <option value="active">激活</option>
+                            <option value="inactive">未激活</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                            <i class="fa fa-search mr-1"></i> 搜索
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 用户列表 -->
+            <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">ID</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">用户名</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">单位名称</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">联系人</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">联系电话</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">收件人</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">收件人电话</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">分类</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">价格级别</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">状态</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">注册时间</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-4 py-3 text-sm">1</td>
+                            <td class="px-4 py-3 text-sm">hebei_medical</td>
+                            <td class="px-4 py-3 text-sm">河北xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">张三</td>
+                            <td class="px-4 py-3 text-sm">13800138001</td>
+                            <td class="px-4 py-3 text-sm">张三</td>
+                            <td class="px-4 py-3 text-sm">13800138001</td>
+                            <td class="px-4 py-3 text-sm">医疗器械</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">A</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">激活</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">2026-01-15</td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="#" class="text-warning hover:underline" onclick="toggleUserStatus(1)">禁用</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">2</td>
+                            <td class="px-4 py-3 text-sm">beijing_medical</td>
+                            <td class="px-4 py-3 text-sm">北京xxx医疗科技有限公司</td>
+                            <td class="px-4 py-3 text-sm">李四</td>
+                            <td class="px-4 py-3 text-sm">13900139001</td>
+                            <td class="px-4 py-3 text-sm">李四</td>
+                            <td class="px-4 py-3 text-sm">13900139001</td>
+                            <td class="px-4 py-3 text-sm">医疗设备</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">B</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">激活</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">2026-01-20</td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="#" class="text-warning hover:underline" onclick="toggleUserStatus(2)">禁用</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">3</td>
+                            <td class="px-4 py-3 text-sm">shanghai_medical</td>
+                            <td class="px-4 py-3 text-sm">上海xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">王五</td>
+                            <td class="px-4 py-3 text-sm">13700137001</td>
+                            <td class="px-4 py-3 text-sm">王五</td>
+                            <td class="px-4 py-3 text-sm">13700137001</td>
+                            <td class="px-4 py-3 text-sm">医疗器械</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">C</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">激活</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">2026-01-25</td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="#" class="text-warning hover:underline" onclick="toggleUserStatus(3)">禁用</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">4</td>
+                            <td class="px-4 py-3 text-sm">guangzhou_medical</td>
+                            <td class="px-4 py-3 text-sm">广州xxx医疗设备有限公司</td>
+                            <td class="px-4 py-3 text-sm">赵六</td>
+                            <td class="px-4 py-3 text-sm">13600136001</td>
+                            <td class="px-4 py-3 text-sm">赵六</td>
+                            <td class="px-4 py-3 text-sm">13600136001</td>
+                            <td class="px-4 py-3 text-sm">医疗设备</td>
+                            <td class="px-4 py-3 text-sm"></td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">未激活</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">2026-02-01</td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="#" class="text-success hover:underline" onclick="showActivateModal(4)">激活</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">5</td>
+                            <td class="px-4 py-3 text-sm">shenzhen_medical</td>
+                            <td class="px-4 py-3 text-sm">深圳xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">孙七</td>
+                            <td class="px-4 py-3 text-sm">13500135001</td>
+                            <td class="px-4 py-3 text-sm">孙七</td>
+                            <td class="px-4 py-3 text-sm">13500135001</td>
+                            <td class="px-4 py-3 text-sm">医疗器械</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">E</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">激活</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">2026-02-10</td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="#" class="text-warning hover:underline" onclick="toggleUserStatus(5)">禁用</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- 分页 -->
+                <div class="px-4 py-3 flex items-center justify-between border-t border-gray-200">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            上一页
+                        </a>
+                        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            下一页
+                        </a>
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                显示 <span class="font-medium">1</span> 到 <span class="font-medium">4</span> 共 <span class="font-medium">12</span> 条记录
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">上一页</span>
+                                    <i class="fa fa-chevron-left"></i>
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-admin-primary text-sm font-medium text-white">
+                                    1
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    2
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    3
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">下一页</span>
+                                    <i class="fa fa-chevron-right"></i>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 价格级别选择弹窗 -->
+    <div id="priceLevelModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">选择价格级别</h3>
+                <button onclick="closePriceLevelModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <form class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">价格级别 <span class="text-danger">*</span></label>
+                    <select id="priceLevelSelect" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <option value="">请选择价格级别</option>
+                        <option value="A">A级</option>
+                        <option value="B">B级</option>
+                        <option value="C">C级</option>
+                        <option value="D">D级</option>
+                        <option value="E">E级</option>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closePriceLevelModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                        取消
+                    </button>
+                    <button type="button" onclick="confirmPriceLevel()" class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                        <i class="fa fa-check mr-1"></i> 确认
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 激活选项弹窗 -->
+    <div id="activateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">用户激活选项</h3>
+                <button onclick="closeActivateModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-6">
+                <p class="text-gray-600">请选择激活方式：</p>
+            </div>
+            <div class="space-y-4">
+                <button class="w-full py-3 bg-admin-primary text-white rounded-md hover:bg-admin-primary/90 transition-colors flex items-center justify-center gap-2" onclick="activateUser()">
+                    <i class="fa fa-check-circle"></i>
+                    <span>直接激活</span>
+                </button>
+                <button class="w-full py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-colors flex items-center justify-center gap-2" onclick="goToEditPage()">
+                    <i class="fa fa-cog"></i>
+                    <span>设置后激活</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 侧边栏导航
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                    this.classList.add('active');
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
+                });
+            });
+            
+            // 加载用户列表
+            loadUserList();
+        });
+
+        let currentUserId = null;
+
+        // 加载用户列表
+        async function loadUserList() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = 'admin-login.html';
+                    return;
+                }
+                
+                const response = await fetch('http://localhost:3002/api/users/all', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    updateUserTable(users);
+                } else {
+                    console.error('加载用户列表失败');
+                }
+            } catch (error) {
+                console.error('加载用户列表错误:', error);
+            }
+        }
+
+        // 更新用户表格
+        function updateUserTable(users) {
+            const tbody = document.querySelector('tbody');
+            if (!tbody) return;
+            
+            // 清空现有数据
+            tbody.innerHTML = '';
+            
+            // 添加用户数据
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-4 py-3 text-sm">${user.id}</td>
+                    <td class="px-4 py-3 text-sm">${user.username}</td>
+                    <td class="px-4 py-3 text-sm">${user.companyName}</td>
+                    <td class="px-4 py-3 text-sm">${user.contactPerson}</td>
+                    <td class="px-4 py-3 text-sm">${user.contactPhone}</td>
+                    <td class="px-4 py-3 text-sm">${user.contactPerson}</td>
+                    <td class="px-4 py-3 text-sm">${user.contactPhone}</td>
+                    <td class="px-4 py-3 text-sm">医疗器械</td>
+                    <td class="px-4 py-3 text-sm">
+                        <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">A</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm">
+                        <span class="px-2 py-1 text-xs rounded-full ${user.status ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${user.status ? '激活' : '未激活'}</span>
+                    </td>
+                    <td class="px-4 py-3 text-sm">${user.registeredAt ? new Date(user.registeredAt).toLocaleDateString() : ''}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <a href="#" class="${user.status ? 'text-warning' : 'text-success'} hover:underline" onclick="${user.status ? 'toggleUserStatus(' + user.id + ')' : 'showActivateModal(' + user.id + ')'}">${user.status ? '禁用' : '激活'}</a>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 状态切换函数
+        function toggleUserStatus(userId) {
+            if (confirm('确定要切换该用户的状态吗？')) {
+                // 这里可以添加AJAX请求来更新用户状态
+                alert('状态切换成功！');
+                // 重新加载用户列表
+                loadUserList();
+            }
+        }
+
+        // 关闭价格级别选择弹窗
+        function closePriceLevelModal() {
+            document.getElementById('priceLevelModal').classList.add('hidden');
+            currentUserId = null;
+        }
+
+        // 显示激活选项弹窗
+        function showActivateModal(userId) {
+            currentUserId = userId;
+            document.getElementById('activateModal').classList.remove('hidden');
+        }
+
+        // 关闭激活选项弹窗
+        function closeActivateModal() {
+            document.getElementById('activateModal').classList.add('hidden');
+            currentUserId = null;
+        }
+
+        // 直接激活用户
+        function activateUser() {
+            if (currentUserId) {
+                // 这里可以添加AJAX请求来激活用户
+                alert('用户激活成功！');
+                closeActivateModal();
+                // 重新加载用户列表
+                loadUserList();
+            }
+        }
+
+        // 跳转到编辑页面
+        function goToEditPage() {
+            if (currentUserId) {
+                closeActivateModal();
+                // 跳转到编辑页面
+                window.location.href = `admin-user-detail.html?id=${currentUserId}`;
+            }
+        }
+
+        // 确认价格级别选择
+        function confirmPriceLevel() {
+            const priceLevel = document.getElementById('priceLevelSelect').value;
+            if (!priceLevel) {
+                alert('请选择价格级别');
+                return;
+            }
+
+            if (confirm('确定要为该用户设置价格级别并激活账号吗？')) {
+                alert('价格级别设置成功，用户已激活！');
+                // 这里可以添加AJAX请求来更新用户状态和价格级别
+                closePriceLevelModal();
+                // 重新加载用户列表
+                loadUserList();
+            }
+        }
+    </script>
+</body>
+</html>

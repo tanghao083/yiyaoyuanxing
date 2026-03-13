@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同城生活 - 商家管理中心</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-primary/10 text-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-primary text-white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-primary text-lg font-bold">M</span>
+                    </div>
+                    <span class="font-bold text-white text-xl">同城生活 - 商家管理中心</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-bell text-white"></i>
+                    <span>消息</span>
+                </div>
+                <div class="flex items-center gap-2 relative group">
+                    <span>张亮麻辣烫</span>
+                    <div class="flex items-center gap-1 cursor-pointer">
+                        <span>张老板</span>
+                        <i class="fa fa-chevron-down text-xs"></i>
+                    </div>
+                    <!-- 下拉菜单 -->
+                    <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                        <div class="py-2">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">店铺设置</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                            <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md h-[calc(100vh-64px)] fixed left-0 top-16 overflow-y-auto">
+            <div class="py-4">
+                <div class="px-4 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">店铺管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-index.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-home text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="merchant-shop-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-store text-xs"></i>
+                        </div>
+                        <span>店铺设置</span>
+                    </a>
+                    <a href="merchant-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-shopping-bag text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="merchant-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-8 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">营销管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-promotions.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-gift text-xs"></i>
+                        </div>
+                        <span>促销活动</span>
+                    </a>
+                    <a href="merchant-coupons.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-ticket text-xs"></i>
+                        </div>
+                        <span>优惠券管理</span>
+                    </a>
+                    <a href="merchant-advertising.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-bullhorn text-xs"></i>
+                        </div>
+                        <span>推广管理</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-8 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">客户管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-customers.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>客户管理</span>
+                    </a>
+                    <a href="merchant-reviews.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-star text-xs"></i>
+                        </div>
+                        <span>评价管理</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-8 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">财务管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务对账</span>
+                    </a>
+                    <a href="merchant-invoices.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text-o text-xs"></i>
+                        </div>
+                        <span>发票管理</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-4 gap-6 mb-6">
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-medium text-gray-500">今日订单</h3>
+                        <i class="fa fa-shopping-cart text-primary"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">128</div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-success text-xs">+12.5%</span>
+                        <span class="text-xs text-gray-500 ml-2">较昨日</span>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-medium text-gray-500">今日销售额</h3>
+                        <i class="fa fa-money text-primary"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">¥3,280</div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-success text-xs">+8.3%</span>
+                        <span class="text-xs text-gray-500 ml-2">较昨日</span>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-medium text-gray-500">待处理订单</h3>
+                        <i class="fa fa-clock-o text-primary"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">12</div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-danger text-xs">+3</span>
+                        <span class="text-xs text-gray-500 ml-2">较昨日</span>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-medium text-gray-500">新增客户</h3>
+                        <i class="fa fa-user-plus text-primary"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-800">28</div>
+                    <div class="flex items-center mt-2">
+                        <span class="text-success text-xs">+5.2%</span>
+                        <span class="text-xs text-gray-500 ml-2">较昨日</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 销售趋势 -->
+            <div class="grid grid-cols-2 gap-6 mb-6">
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <h3 class="text-sm font-medium text-gray-500 mb-4">销售趋势</h3>
+                    <div class="h-64 bg-gray-100 rounded-md flex items-center justify-center">
+                        <div class="text-center">
+                            <i class="fa fa-line-chart text-4xl text-gray-300 mb-2"></i>
+                            <p class="text-sm text-gray-500">销售数据图表</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <h3 class="text-sm font-medium text-gray-500 mb-4">热门商品</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gray-200 rounded-md overflow-hidden">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spicy%20hot%20pot%20with%20various%20ingredients&image_size=square" alt="商品图片" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm">经典麻辣烫</span>
+                            </div>
+                            <span class="text-sm font-medium">32件</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gray-200 rounded-md overflow-hidden">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=iced%20lemon%20tea%20in%20a%20glass&image_size=square" alt="商品图片" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm">冰柠檬茶</span>
+                            </div>
+                            <span class="text-sm font-medium">28件</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gray-200 rounded-md overflow-hidden">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spicy%20sichuan%20hot%20pot&image_size=square" alt="商品图片" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm">川味冒菜</span>
+                            </div>
+                            <span class="text-sm font-medium">24件</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-gray-200 rounded-md overflow-hidden">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=fresh%20vegetable%20salad&image_size=square" alt="商品图片" class="w-full h-full object-cover">
+                                </div>
+                                <span class="text-sm">蔬菜沙拉</span>
+                            </div>
+                            <span class="text-sm font-medium">18件</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 最近订单 -->
+            <div class="bg-white p-4 rounded-lg shadow-card">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-sm font-medium text-gray-500">最近订单</h3>
+                    <a href="merchant-orders.html" class="text-sm text-primary">查看全部</a>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b">
+                                <th class="text-left py-2">订单号</th>
+                                <th class="text-left py-2">客户</th>
+                                <th class="text-left py-2">金额</th>
+                                <th class="text-left py-2">状态</th>
+                                <th class="text-left py-2">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="py-3">20260310001</td>
+                                <td class="py-3">张三</td>
+                                <td class="py-3">¥25.8</td>
+                                <td class="py-3"><span class="text-warning text-xs">待配送</span></td>
+                                <td class="py-3">
+                                    <a href="#" class="text-primary text-xs">查看</a>
+                                </td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="py-3">20260310002</td>
+                                <td class="py-3">李四</td>
+                                <td class="py-3">¥39.9</td>
+                                <td class="py-3"><span class="text-success text-xs">已完成</span></td>
+                                <td class="py-3">
+                                    <a href="#" class="text-primary text-xs">查看</a>
+                                </td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="py-3">20260310003</td>
+                                <td class="py-3">王五</td>
+                                <td class="py-3">¥19.9</td>
+                                <td class="py-3"><span class="text-primary text-xs">待付款</span></td>
+                                <td class="py-3">
+                                    <a href="#" class="text-primary text-xs">查看</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3">20260310004</td>
+                                <td class="py-3">赵六</td>
+                                <td class="py-3">¥45.6</td>
+                                <td class="py-3"><span class="text-warning text-xs">待配送</span></td>
+                                <td class="py-3">
+                                    <a href="#" class="text-primary text-xs">查看</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- 脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 导航切换
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // 移除所有活动状态
+                    sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // 添加活动状态
+                    this.classList.add('active');
+                    
+                    // 如果链接有href且不是#，则执行跳转
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

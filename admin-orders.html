@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单管理 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <!-- 通用交互逻辑 -->
+    <script src="common.js"></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">订单管理</h2>
+            </div>
+
+            <!-- 搜索和筛选 -->
+            <div class="bg-white p-4 rounded-lg shadow-card mb-6">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">订单号</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入订单号">
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">客户</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入客户名称">
+                    </div>
+                    <div class="flex-1 min-w-[200px]">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                            <option value="">全部状态</option>
+                            <option value="submitted">已提交</option>
+                            <option value="processing">部分处理</option>
+                            <option value="completed">已完成</option>
+                            <option value="cancelled">已取消</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                            <i class="fa fa-search mr-1"></i> 搜索
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单列表 -->
+            <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">订单号</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">客户</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">订单日期</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">订单金额</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">未到账金额</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">未开发票金额</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">订单状态</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发票状态</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081456</td>
+                            <td class="px-4 py-3 text-sm">河北xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-03-01</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥21,582.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已完成</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已全额开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081441</td>
+                            <td class="px-4 py-3 text-sm">北京xxx医疗科技有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-28</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥47,897.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥17,897.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥27,897.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">处理中</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">部分开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081223</td>
+                            <td class="px-4 py-3 text-sm">上海xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-27</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥51,275.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥21,275.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥51,275.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">处理中</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">未开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081180</td>
+                            <td class="px-4 py-3 text-sm">广州xxx医疗设备有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-26</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥143,030.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥43,030.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥43,030.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">处理中</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">部分开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081150</td>
+                            <td class="px-4 py-3 text-sm">深圳xxx医疗科技有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-25</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥35,670.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已完成</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已全额开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081120</td>
+                            <td class="px-4 py-3 text-sm">杭州xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-24</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥28,950.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥13,950.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥13,950.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">处理中</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">部分开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081100</td>
+                            <td class="px-4 py-3 text-sm">成都xxx医疗设备有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-23</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥62,340.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥62,340.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已完成</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">未开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081080</td>
+                            <td class="px-4 py-3 text-sm">武汉xxx医疗器械有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-22</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥45,120.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥0.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已完成</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已全额开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 text-sm">FMXDM00081050</td>
+                            <td class="px-4 py-3 text-sm">南京xxx医疗科技有限公司</td>
+                            <td class="px-4 py-3 text-sm">2026-02-21</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥32,780.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥12,780.00</td>
+                            <td class="px-4 py-3 text-sm font-medium">¥12,780.00</td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">处理中</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">部分开票</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="admin-order-detail.html" class="text-admin-primary hover:underline">详情</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <!-- 分页 -->
+                <div class="px-4 py-3 flex items-center justify-between border-t border-gray-200">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            上一页
+                        </a>
+                        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            下一页
+                        </a>
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-700">
+                                显示 <span class="font-medium">1</span> 到 <span class="font-medium">10</span> 共 <span class="font-medium">32</span> 条记录
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="pagination relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">上一页</span>
+                                    <i class="fa fa-chevron-left"></i>
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-admin-primary text-sm font-medium text-white">
+                                    1
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    2
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    3
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    4
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                    5
+                                </a>
+                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <span class="sr-only">下一页</span>
+                                    <i class="fa fa-chevron-right"></i>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 侧边栏导航
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                this.classList.add('active');
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化分页 - 由common.js自动处理
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入库详情 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">入库详情</h2>
+                <a href="admin-inventory.html" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    <i class="fa fa-arrow-left mr-1"></i> 返回库存管理
+                </a>
+            </div>
+
+            <!-- 入库单基本信息 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <div class="flex flex-wrap gap-6 mb-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">入库单号</h3>
+                        <p class="text-lg font-semibold">RK20260210001</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">供应商</h3>
+                        <p class="text-lg font-semibold">瑞士迈道国际有限公司</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">入库时间</h3>
+                        <p class="text-lg font-semibold">2026-02-10 09:30</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">状态</h3>
+                        <p class="text-lg font-semibold">
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已完成</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-6">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">联系人</h3>
+                        <p>李四</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">联系电话</h3>
+                        <p>13900139001</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">入库类型</h3>
+                        <p>采购入库</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 入库金额信息 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">入库金额信息</h3>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">入库总金额</h4>
+                        <p class="text-xl font-bold">¥25,000.00</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">已支付金额</h4>
+                        <p class="text-xl font-bold">¥25,000.00</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">未支付金额</h4>
+                        <p class="text-xl font-bold text-danger">¥0.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 入库商品详情 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">入库商品详情</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4">商品规格</th>
+                                <th class="text-left py-3 px-4">商品名称</th>
+                                <th class="text-left py-3 px-4">生产厂家</th>
+                                <th class="text-left py-3 px-4">包装</th>
+                                <th class="text-left py-3 px-4">采购价</th>
+                                <th class="text-left py-3 px-4">入库数量</th>
+                                <th class="text-left py-3 px-4">入库前库存</th>
+                                <th class="text-left py-3 px-4">入库后库存</th>
+                                <th class="text-left py-3 px-4">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">ICT71125CA</td>
+                                <td class="py-3 px-4">血栓抽吸导管</td>
+                                <td class="py-3 px-4">瑞士迈道国际有限公司</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">¥1,000.00</td>
+                                <td class="py-3 px-4">10</td>
+                                <td class="py-3 px-4">0</td>
+                                <td class="py-3 px-4">10</td>
+                                <td class="py-3 px-4">
+                                    <a href="admin-product-detail.html" class="text-admin-primary hover:underline">查看详情</a>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">ENCR402300</td>
+                                <td class="py-3 px-4">颅内支架</td>
+                                <td class="py-3 px-4">瑞士迈道国际有限公司</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">¥2,500.00</td>
+                                <td class="py-3 px-4">6</td>
+                                <td class="py-3 px-4">0</td>
+                                <td class="py-3 px-4">6</td>
+                                <td class="py-3 px-4">
+                                    <a href="admin-product-detail.html" class="text-admin-primary hover:underline">查看详情</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 入库记录 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">入库记录</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4">操作时间</th>
+                                <th class="text-left py-3 px-4">操作人</th>
+                                <th class="text-left py-3 px-4">操作类型</th>
+                                <th class="text-left py-3 px-4">备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">2026-02-10 09:30</td>
+                                <td class="py-3 px-4">李内勤</td>
+                                <td class="py-3 px-4">创建入库单</td>
+                                <td class="py-3 px-4">系统自动生成</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">2026-02-10 10:00</td>
+                                <td class="py-3 px-4">王仓库</td>
+                                <td class="py-3 px-4">确认入库</td>
+                                <td class="py-3 px-4">商品已验收入库</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">2026-02-10 10:30</td>
+                                <td class="py-3 px-4">张财务</td>
+                                <td class="py-3 px-4">付款完成</td>
+                                <td class="py-3 px-4">已支付全部货款</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 相关文件 -->
+            <div class="bg-white rounded-lg shadow-card p-6">
+                <h3 class="text-lg font-semibold mb-4">相关文件</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded flex items-center justify-center">
+                                <i class="fa fa-file-pdf-o text-blue-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">采购合同.pdf</h4>
+                                <p class="text-sm text-gray-500">2026-02-01上传</p>
+                            </div>
+                        </div>
+                        <a href="#" class="text-admin-primary hover:underline">
+                            <i class="fa fa-download mr-1"></i> 下载
+                        </a>
+                    </div>
+                    <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded flex items-center justify-center">
+                                <i class="fa fa-file-excel-o text-green-500"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium">入库清单.xlsx</h4>
+                                <p class="text-sm text-gray-500">2026-02-10上传</p>
+                            </div>
+                        </div>
+                        <a href="#" class="text-admin-primary hover:underline">
+                            <i class="fa fa-download mr-1"></i> 下载
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 侧边栏导航
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                this.classList.add('active');
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

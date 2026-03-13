@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单中心 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-primary/10 text-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-primary/20 text-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold">M</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>我的消息</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>河北xxx医疗器械有限公司</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <span>孟大卫</span>
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">资质管理</a>
+                                <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">主菜单</h2>
+                <div class="space-y-2">
+                    <a href="index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-home text-xs"></i>
+                        </div>
+                        <span>首页</span>
+                    </a>
+                    <a href="order.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-search text-xs"></i>
+                        </div>
+                        <span>商品搜索</span>
+                    </a>
+                    <a href="order-center.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单中心</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-shopping-cart text-xs"></i>
+                        </div>
+                        <span>我的购物车</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-list text-xs"></i>
+                        </div>
+                        <span>我的订单</span>
+                    </a>
+                    <a href="order.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-plus-circle text-xs"></i>
+                        </div>
+                        <span>创建订单</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-exchange text-xs"></i>
+                        </div>
+                        <span>流向管理</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存查询</span>
+                    </a>
+                    <a href="customer-service.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-headphones text-xs"></i>
+                        </div>
+                        <span>客户服务</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <!-- 快速工具 -->
+            <section class="mb-6">
+                <h2 class="text-lg font-semibold mb-4">快速工具</h2>
+                <div class="grid grid-cols-5 gap-4">
+                    <a href="order.html" class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-shopping-cart text-primary text-xl"></i>
+                        </div>
+                        <span class="text-sm">创建订单</span>
+                    </a>
+                    <a href="order-center.html" class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-file-text text-green-600 text-xl"></i>
+                        </div>
+                        <span class="text-sm">快速下单</span>
+                    </a>
+                    <a href="#" class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-list text-yellow-600 text-xl"></i>
+                        </div>
+                        <span class="text-sm">我的购物车</span>
+                    </a>
+                    <div class="bg-white p-4 rounded-lg shadow-card col-span-2 flex items-center justify-around">
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fa fa-wallet text-purple-600 text-xl"></i>
+                            </div>
+                            <span class="text-sm">可用余额</span>
+                            <span class="text-sm font-bold text-primary mt-1">¥171.00</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                                <i class="fa fa-shopping-cart text-primary text-xl"></i>
+                            </div>
+                            <span class="text-sm">订单金额</span>
+                            <span class="text-sm font-bold text-primary mt-1">¥0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 订单中心 -->
+            <section class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-lg font-semibold mb-4">订单中心</h2>
+                
+                <!-- 订单状态标签 -->
+                <div class="flex border-b border-gray-200 mb-4">
+                    <button class="px-4 py-2 text-primary border-b-2 border-primary font-medium">全部订单</button>
+                    <button class="px-4 py-2 text-gray-600 hover:text-primary">已提交</button>
+                    <button class="px-4 py-2 text-gray-600 hover:text-primary">部分部分处理</button>
+                    <button class="px-4 py-2 text-gray-600 hover:text-primary">全部部分处理</button>
+                    <button class="px-4 py-2 text-gray-600 hover:text-primary">已完成</button>
+                    <button class="px-4 py-2 text-gray-600 hover:text-primary">已取消</button>
+                </div>
+                
+                <!-- 查询区域 -->
+                <div class="flex flex-wrap gap-4 mb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600">单据日期：</span>
+                        <input type="date" value="2026-02-05" class="px-3 py-1 border border-gray-300 rounded text-sm">
+                        <span class="text-sm text-gray-600">至</span>
+                        <input type="date" value="2026-02-11" class="px-3 py-1 border border-gray-300 rounded text-sm">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600">订单：</span>
+                        <input type="text" placeholder="单号" class="px-3 py-1 border border-gray-300 rounded text-sm w-40">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600">商品：</span>
+                        <input type="text" placeholder="名称/规格" class="px-3 py-1 border border-gray-300 rounded text-sm w-60">
+                    </div>
+                    <button class="bg-primary text-white px-4 py-1 rounded text-sm hover:bg-primary/90">
+                        查询
+                    </button>
+                </div>
+                
+                <!-- 订单列表 -->
+                <div class="space-y-4">
+                    <!-- 订单1 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="bg-gray-50 px-4 py-3 flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">下单时间：2026-02-10 16:20</span>
+                                <span class="text-sm">单号：FMXDM00081456</span>
+                                <span class="text-sm">状态：<span class="text-green-600">已完成</span></span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">订单金额：¥21,582.00</span>
+                                <span class="text-sm">出库金额：¥20,412.00</span>
+                                <div class="flex gap-2">
+                                    <a href="#" class="text-sm text-primary hover:underline">下载报销凭证</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">导出明细</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">批量下载注册证</a>
+                                    <a href="order-detail.html?orderId=81456" class="text-sm text-primary hover:underline">详情</a>
+                                    <button class="text-sm text-primary hover:underline">
+                                        收起 <i class="fa fa-chevron-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-3">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left py-2">商品规格</th>
+                                        <th class="text-left py-2">商品名称</th>
+                                        <th class="text-left py-2">生产厂家</th>
+                                        <th class="text-left py-2">分类</th>
+                                        <th class="text-left py-2">包装</th>
+                                        <th class="text-left py-2">单价</th>
+                                        <th class="text-left py-2">订单数量</th>
+                                        <th class="text-left py-2">已发货</th>
+                                        <th class="text-left py-2">未发货</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="py-2">ICT71125CA</td>
+                                        <td class="py-2">血栓抽吸导管</td>
+                                        <td class="py-2">瑞士迈道国际有限公司Medos International SARL</td>
+                                        <td class="py-2">CNV</td>
+                                        <td class="py-2">1</td>
+                                        <td class="py-2">¥7,194.0000</td>
+                                        <td class="py-2">3</td>
+                                        <td class="py-2">0</td>
+                                        <td class="py-2">3</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 订单2 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="bg-gray-50 px-4 py-3 flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">下单时间：2026-02-10 15:07</span>
+                                <span class="text-sm">单号：FMXDM00081441</span>
+                                <span class="text-sm">状态：<span class="text-green-600">已完成</span></span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">订单金额：¥47,897.00</span>
+                                <span class="text-sm">出库金额：¥46,889.00</span>
+                                <div class="flex gap-2">
+                                    <a href="#" class="text-sm text-primary hover:underline">下载报销凭证</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">导出明细</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">批量下载注册证</a>
+                                    <a href="order-detail.html" class="text-sm text-primary hover:underline">详情</a>
+                                    <button class="text-sm text-primary hover:underline">
+                                        展开 <i class="fa fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 订单3 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="bg-gray-50 px-4 py-3 flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">下单时间：2026-02-06 13:41</span>
+                                <span class="text-sm">单号：FMXDM00081223</span>
+                                <span class="text-sm">状态：<span class="text-green-600">已完成</span></span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">订单金额：¥51,275.00</span>
+                                <span class="text-sm">出库金额：¥51,275.00</span>
+                                <div class="flex gap-2">
+                                    <a href="#" class="text-sm text-primary hover:underline">下载报销凭证</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">导出明细</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">批量下载注册证</a>
+                                    <a href="order-detail.html" class="text-sm text-primary hover:underline">详情</a>
+                                    <button class="text-sm text-primary hover:underline">
+                                        展开 <i class="fa fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 订单4 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <div class="bg-gray-50 px-4 py-3 flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">下单时间：2026-02-05 16:21</span>
+                                <span class="text-sm">单号：FMXDM00081180</span>
+                                <span class="text-sm">状态：<span class="text-green-600">已完成</span></span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">订单金额：¥143,030.00</span>
+                                <span class="text-sm">出库金额：¥140,435.00</span>
+                                <div class="flex gap-2">
+                                    <a href="#" class="text-sm text-primary hover:underline">下载报销凭证</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">导出明细</a>
+                                    <a href="#" class="text-sm text-primary hover:underline">批量下载注册证</a>
+                                    <a href="order-detail.html" class="text-sm text-primary hover:underline">详情</a>
+                                    <button class="text-sm text-primary hover:underline">
+                                        展开 <i class="fa fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // 侧边栏导航
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                this.classList.add('active');
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+        
+        // 展开/收起订单详情
+        const toggleButtons = document.querySelectorAll('button:has(.fa-chevron-down), button:has(.fa-chevron-up)');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('fa-chevron-down')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                    this.textContent = '收起 ';
+                    this.appendChild(icon);
+                    // 这里可以添加展开订单详情的逻辑
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                    this.textContent = '展开 ';
+                    this.appendChild(icon);
+                    // 这里可以添加收起订单详情的逻辑
+                }
+            });
+        });
+    </script>
+</body>
+</html>

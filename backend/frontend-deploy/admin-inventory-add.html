@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新增入库 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">新增入库</h2>
+                <a href="admin-inventory.html" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    <i class="fa fa-arrow-left mr-1"></i> 返回库存管理
+                </a>
+            </div>
+
+            <!-- 入库表单 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <form onsubmit="submitInventory(event)">
+                    <!-- 基本信息 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">入库类型 <span class="text-danger">*</span></label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                                <option value="purchase">采购入库</option>
+                                <option value="return">退货入库</option>
+                                <option value="transfer">调拨入库</option>
+                                <option value="other">其他入库</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">供应商 <span class="text-danger">*</span></label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                                <option value="supplier1">瑞士迈道国际有限公司</option>
+                                <option value="supplier2">科睿医疗</option>
+                                <option value="supplier3">北京科仪邦思</option>
+                                <option value="supplier4">家颖科技（PT MedTech）</option>
+                                <option value="supplier5">Segue Manufacturing（厦门）</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">联系人</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入联系人">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">联系电话</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入联系电话">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">入库时间 <span class="text-danger">*</span></label>
+                            <input type="datetime-local" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">入库单号 <span class="text-danger">*</span></label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入入库单号" required>
+                        </div>
+                    </div>
+
+                    <!-- 商品信息 -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-4">入库商品信息</h3>
+                        <div class="space-y-4">
+                            <!-- 商品行 1 -->
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 border border-gray-200 rounded-lg p-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">商品 <span class="text-danger">*</span></label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                                        <option value="product1">血栓抽吸导管 (ICT71125CA)</option>
+                                        <option value="product2">颅内支架 (ENCR402300)</option>
+                                        <option value="product3">冠状动脉支架 (STENT001)</option>
+                                        <option value="product4">造影导管 (CATH001)</option>
+                                        <option value="product5">心脏瓣膜 (VALVE001)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">生产厂家</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" value="瑞士迈道国际有限公司" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">采购价 <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入采购价" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">入库数量 <span class="text-danger">*</span></label>
+                                    <input type="number" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入入库数量" required>
+                                </div>
+                                <div class="flex items-end">
+                                    <button type="button" class="bg-danger text-white px-3 py-2 rounded-md hover:bg-danger/90 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 商品行 2 -->
+                            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 border border-gray-200 rounded-lg p-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">商品 <span class="text-danger">*</span></label>
+                                    <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                                        <option value="product1">血栓抽吸导管 (ICT71125CA)</option>
+                                        <option value="product2">颅内支架 (ENCR402300)</option>
+                                        <option value="product3">冠状动脉支架 (STENT001)</option>
+                                        <option value="product4">造影导管 (CATH001)</option>
+                                        <option value="product5">心脏瓣膜 (VALVE001)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">生产厂家</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" value="瑞士迈道国际有限公司" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">采购价 <span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入采购价" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">入库数量 <span class="text-danger">*</span></label>
+                                    <input type="number" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入入库数量" required>
+                                </div>
+                                <div class="flex items-end">
+                                    <button type="button" class="bg-danger text-white px-3 py-2 rounded-md hover:bg-danger/90 transition-colors">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 添加商品按钮 -->
+                            <div class="flex justify-center">
+                                <button type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors flex items-center gap-2" onclick="addProductRow()">
+                                    <i class="fa fa-plus"></i>
+                                    <span>添加商品</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 文件上传 -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-4">上传入库文件</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">入库清单</label>
+                                <input type="file" accept=".xlsx,.xls,.csv" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                                <p class="text-xs text-gray-500 mt-1">支持 Excel、CSV 格式文件</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">采购合同</label>
+                                <input type="file" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                                <p class="text-xs text-gray-500 mt-1">支持 PDF 格式文件</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">其他文件</label>
+                                <input type="file" multiple class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                                <p class="text-xs text-gray-500 mt-1">可上传多个文件</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 备注 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">备注</label>
+                        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" rows="3" placeholder="请输入备注信息"></textarea>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="flex justify-end gap-2">
+                        <button type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                            取消
+                        </button>
+                        <button type="submit" class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                            <i class="fa fa-check mr-1"></i> 提交入库
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 侧边栏导航
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                this.classList.add('active');
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+
+        // 添加商品行
+        function addProductRow() {
+            const container = document.querySelector('.space-y-4');
+            const productRow = document.querySelector('.grid.grid-cols-1.md\:grid-cols-5').cloneNode(true);
+            
+            // 清空输入值
+            const inputs = productRow.querySelectorAll('input');
+            inputs.forEach(input => {
+                if (!input.hasAttribute('readonly')) {
+                    input.value = '';
+                }
+            });
+            
+            // 插入到添加按钮之前
+            const addButton = container.querySelector('button[type="button"]').parentElement;
+            container.insertBefore(productRow, addButton);
+        }
+
+        // 提交入库
+        function submitInventory(event) {
+            event.preventDefault();
+            // 模拟提交
+            alert('入库单提交成功！');
+            // 跳转到入库详情页
+            window.location.href = 'admin-inventory-in.html';
+        }
+    </script>
+</body>
+</html>

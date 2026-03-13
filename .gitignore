@@ -1,0 +1,11 @@
+# 依赖文件
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+
+# 编辑器文件
+.vscode/
+.idea/
+
+# 系统文件
+Thumbs.db

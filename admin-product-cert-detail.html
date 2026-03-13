@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品资质详情 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">商品资质详情</h2>
+                <div class="flex gap-2">
+                    <a href="admin-supplier-certifications.html" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors flex items-center gap-1">
+                        <i class="fa fa-arrow-left"></i>
+                        <span>返回列表</span>
+                    </a>
+                    <a href="#" class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors flex items-center gap-1" onclick="showEditProductCertModal(1)">
+                        <i class="fa fa-edit"></i>
+                        <span>编辑</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 商品基本信息 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">基本信息</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">生产厂家</label>
+                        <p class="text-gray-900">北京科仪邦思</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">分类</label>
+                        <p class="text-gray-900">强生</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">商品名称</label>
+                        <p class="text-gray-900">血栓抽吸导管</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
+                        <p class="text-gray-900">
+                            <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">正常</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 资质文件 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">资质文件</h3>
+                
+                <!-- 注册证 -->
+                <div class="mb-6 border-b border-gray-200 pb-6">
+                    <h4 class="text-md font-medium mb-3">注册证</h4>
+                    <div class="flex items-center gap-4">
+                        <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center">
+                            <i class="fa fa-file-pdf-o text-gray-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-gray-900">registration_certificate.pdf</p>
+                            <p class="text-sm text-gray-500 mt-1">有效期：2025-01-01 至 2027-12-31</p>
+                            <div class="flex gap-2 mt-2">
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa fa-eye"></i>
+                                    <span>查看</span>
+                                </a>
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa fa-download"></i>
+                                    <span>下载</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 说明书 -->
+                <div class="mb-6 border-b border-gray-200 pb-6">
+                    <h4 class="text-md font-medium mb-3">说明书</h4>
+                    <div class="flex items-center gap-4">
+                        <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center">
+                            <i class="fa fa-file-pdf-o text-gray-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-gray-900">product_manual.pdf</p>
+                            <div class="flex gap-2 mt-2">
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa fa-eye"></i>
+                                    <span>查看</span>
+                                </a>
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa fa-download"></i>
+                                    <span>下载</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 技术要求 -->
+                <div class="mb-6 border-b border-gray-200 pb-6">
+                    <h4 class="text-md font-medium mb-3">技术要求</h4>
+                    <div class="flex items-center gap-4">
+                        <div class="w-24 h-24 bg-gray-100 rounded flex items-center justify-center">
+                            <i class="fa fa-file-pdf-o text-gray-400 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-gray-900">technical_requirements.pdf</p>
+                            <div class="flex gap-2 mt-2">
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa fa-eye"></i>
+                                    <span>查看</span>
+                                </a>
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
+                                    <i class="fa fa-download"></i>
+                                    <span>下载</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 产品外包装 -->
+                <div class="mb-6">
+                    <h4 class="text-md font-medium mb-3">产品外包装（多图）</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="border rounded-md p-3">
+                            <div class="w-full h-48 bg-gray-100 rounded flex items-center justify-center mb-2">
+                                <i class="fa fa-file-image-o text-gray-400 text-3xl"></i>
+                            </div>
+                            <p class="text-sm text-gray-900 mb-2">package_1.jpg</p>
+                            <div class="flex gap-2">
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1 text-sm">
+                                    <i class="fa fa-eye"></i>
+                                    <span>查看</span>
+                                </a>
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1 text-sm">
+                                    <i class="fa fa-download"></i>
+                                    <span>下载</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="border rounded-md p-3">
+                            <div class="w-full h-48 bg-gray-100 rounded flex items-center justify-center mb-2">
+                                <i class="fa fa-file-image-o text-gray-400 text-3xl"></i>
+                            </div>
+                            <p class="text-sm text-gray-900 mb-2">package_2.jpg</p>
+                            <div class="flex gap-2">
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1 text-sm">
+                                    <i class="fa fa-eye"></i>
+                                    <span>查看</span>
+                                </a>
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1 text-sm">
+                                    <i class="fa fa-download"></i>
+                                    <span>下载</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="border rounded-md p-3">
+                            <div class="w-full h-48 bg-gray-100 rounded flex items-center justify-center mb-2">
+                                <i class="fa fa-file-image-o text-gray-400 text-3xl"></i>
+                            </div>
+                            <p class="text-sm text-gray-900 mb-2">package_3.jpg</p>
+                            <div class="flex gap-2">
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1 text-sm">
+                                    <i class="fa fa-eye"></i>
+                                    <span>查看</span>
+                                </a>
+                                <a href="#" class="text-blue-600 hover:underline flex items-center gap-1 text-sm">
+                                    <i class="fa fa-download"></i>
+                                    <span>下载</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 相关信息 -->
+            <div class="bg-white rounded-lg shadow-card p-6">
+                <h3 class="text-lg font-semibold mb-4">相关信息</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">创建时间</label>
+                        <p class="text-gray-900">2025-01-01 10:00:00</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">更新时间</label>
+                        <p class="text-gray-900">2025-01-01 10:00:00</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">创建人</label>
+                        <p class="text-gray-900">管理员</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">更新人</label>
+                        <p class="text-gray-900">管理员</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 编辑商品资质模态框 -->
+    <div id="editProductCertModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">编辑商品资质</h3>
+                <button onclick="closeEditProductCertModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <form onsubmit="updateProductCert(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">生产厂家 <span class="text-danger">*</span></label>
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                            <option value="beijing-keyi" selected>北京科仪邦思</option>
+                            <option value="kesen-medical">科森医疗（科森科技）</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">分类 <span class="text-danger">*</span></label>
+                        <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" required>
+                            <option value="1" selected>强生</option>
+                            <option value="2">辉瑞</option>
+                            <option value="3">默沙东</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">商品名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" value="血栓抽吸导管" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">注册证 <span class="text-danger">*</span></label>
+                        <input type="file" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <p class="text-xs text-gray-500 mt-1">当前文件：<a href="#" class="text-blue-600 hover:underline">registration_certificate.pdf</a></p>
+                        <p class="text-xs text-gray-500">请上传PDF格式文件</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">注册证开始 <span class="text-danger">*</span></label>
+                        <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" value="2025-01-01" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">注册证结束 <span class="text-danger">*</span></label>
+                        <input type="date" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" value="2027-12-31" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">说明书 <span class="text-danger">*</span></label>
+                        <input type="file" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <p class="text-xs text-gray-500 mt-1">当前文件：<a href="#" class="text-blue-600 hover:underline">product_manual.pdf</a></p>
+                        <p class="text-xs text-gray-500">请上传PDF格式文件</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">技术要求 <span class="text-danger">*</span></label>
+                        <input type="file" accept=".pdf" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <p class="text-xs text-gray-500 mt-1">当前文件：<a href="#" class="text-blue-600 hover:underline">technical_requirements.pdf</a></p>
+                        <p class="text-xs text-gray-500">请上传PDF格式文件</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">产品外包装（多图） <span class="text-danger">*</span></label>
+                        <input type="file" multiple accept=".jpg,.jpeg,.png" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <p class="text-xs text-gray-500 mt-1">当前文件：3张图片</p>
+                        <p class="text-xs text-gray-500">请上传JPG、JPEG或PNG格式文件</p>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 mt-6">
+                    <button type="button" onclick="closeEditProductCertModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                        取消
+                    </button>
+                    <button type="submit" class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                        <i class="fa fa-check mr-1"></i> 更新
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 显示编辑商品资质模态框
+        function showEditProductCertModal(id) {
+            document.getElementById('editProductCertModal').classList.remove('hidden');
+        }
+
+        // 关闭编辑商品资质模态框
+        function closeEditProductCertModal() {
+            document.getElementById('editProductCertModal').classList.add('hidden');
+        }
+
+        // 更新商品资质
+        function updateProductCert(event) {
+            event.preventDefault();
+            // 模拟提交
+            alert('商品资质更新成功！');
+            closeEditProductCertModal();
+            // 刷新页面
+            location.reload();
+        }
+    </script>
+</body>
+</html>

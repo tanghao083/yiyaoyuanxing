@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单详情 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">订单详情</h2>
+                <a href="admin-orders.html" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    <i class="fa fa-arrow-left mr-1"></i> 返回订单列表
+                </a>
+            </div>
+
+            <!-- 订单基本信息 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <div class="flex flex-wrap gap-6 mb-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">订单号</h3>
+                        <p class="text-lg font-semibold">FMXDM00081456</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">客户</h3>
+                        <p class="text-lg font-semibold">河北xxx医疗器械有限公司</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">下单时间</h3>
+                        <p class="text-lg font-semibold">2026-02-10 16:20</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">状态</h3>
+                        <p class="text-lg font-semibold">
+                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">部分处理</span>
+                            <!-- 退货中状态示例 -->
+                            <!-- <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">退货中</span> -->
+                            <!-- 已退货状态示例 -->
+                            <!-- <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">已退货</span> -->
+                            <!-- 部分退货状态示例 -->
+                            <!-- <span class="px-2 py-1 text-xs rounded-full bg-orange-100 text-orange-800">部分退货</span> -->
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap gap-6">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">联系人</h3>
+                        <p>张三</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">联系电话</h3>
+                        <p>13800138001</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">收货地址</h3>
+                        <p>河北省石家庄市桥西区中山路123号</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单金额信息 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold">订单金额信息</h3>
+                </div>
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">订单金额</h4>
+                        <p class="text-xl font-bold">¥21,582.00</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">总到账金额</h4>
+                        <p class="text-xl font-bold">¥10,000.00</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-500 mb-1">未付金额</h4>
+                        <p class="text-xl font-bold text-danger">¥11,582.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 订单商品详情 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">订单商品详情</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4">商品规格</th>
+                                <th class="text-left py-3 px-4">商品名称</th>
+                                <th class="text-left py-3 px-4">生产厂家</th>
+                                <th class="text-left py-3 px-4">分类</th>
+                                <th class="text-left py-3 px-4">包装</th>
+                                <th class="text-left py-3 px-4">单价</th>
+                                <th class="text-left py-3 px-4">订单数量</th>
+                                <th class="text-left py-3 px-4">已发货</th>
+                                <th class="text-left py-3 px-4">未发货</th>
+                                <th class="text-left py-3 px-4">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">ICT71125CA</td>
+                                <td class="py-3 px-4">血栓抽吸导管</td>
+                                <td class="py-3 px-4">瑞士迈道国际有限公司Medos International SARL</td>
+                                <td class="py-3 px-4">强生</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">¥7,194.0000</td>
+                                <td class="py-3 px-4">3</td>
+                                <td class="py-3 px-4">0</td>
+                                <td class="py-3 px-4">3</td>
+                                <td class="py-3 px-4">
+                                    <button class="text-admin-primary hover:underline mr-3" onclick="showShipmentModal(1)">
+                                        <i class="fa fa-truck mr-1"></i> 发货
+                                    </button>
+                                    <button class="text-warning hover:underline" onclick="showReturnModal(1)">
+                                        <i class="fa fa-undo mr-1"></i> 退货
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">ENF4920300</td>
+                                <td class="py-3 px-4">颅内支架</td>
+                                <td class="py-3 px-4">科睿医疗</td>
+                                <td class="py-3 px-4">强生</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">¥8,900.0000</td>
+                                <td class="py-3 px-4">2</td>
+                                <td class="py-3 px-4">0</td>
+                                <td class="py-3 px-4">2</td>
+                                <td class="py-3 px-4">
+                                    <button class="text-admin-primary hover:underline mr-3" onclick="showShipmentModal(2)">
+                                        <i class="fa fa-truck mr-1"></i> 发货
+                                    </button>
+                                    <button class="text-warning hover:underline" onclick="showReturnModal(2)">
+                                        <i class="fa fa-undo mr-1"></i> 退货
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 发货记录 -->
+            <div class="bg-white rounded-lg shadow-card p-6 mb-6">
+                <h3 class="text-lg font-semibold mb-4">发货记录</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4">发货ID</th>
+                                <th class="text-left py-3 px-4">发货时间</th>
+                                <th class="text-left py-3 px-4">发货人</th>
+                                <th class="text-left py-3 px-4">商品规格</th>
+                                <th class="text-left py-3 px-4">商品名称</th>
+                                <th class="text-left py-3 px-4">发货数量</th>
+                                <th class="text-left py-3 px-4">物流单号</th>
+                                <th class="text-left py-3 px-4">状态</th>
+                                <th class="text-left py-3 px-4">发票</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">SH20260210001</td>
+                                <td class="py-3 px-4">2026-02-10 10:30</td>
+                                <td class="py-3 px-4">李内勤</td>
+                                <td class="py-3 px-4">ICT71125CA</td>
+                                <td class="py-3 px-4">血栓抽吸导管</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">SF1234567890</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已发货</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">未开票</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 退货记录 -->
+            <div class="bg-white rounded-lg shadow-card p-6">
+                <h3 class="text-lg font-semibold mb-4">退货记录</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4">退货ID</th>
+                                <th class="text-left py-3 px-4">订单编号</th>
+                                <th class="text-left py-3 px-4">发货ID</th>
+                                <th class="text-left py-3 px-4">申请时间</th>
+                                <th class="text-left py-3 px-4">申请人</th>
+                                <th class="text-left py-3 px-4">商品规格</th>
+                                <th class="text-left py-3 px-4">商品名称</th>
+                                <th class="text-left py-3 px-4">退货数量</th>
+                                <th class="text-left py-3 px-4">退货原因</th>
+                                <th class="text-left py-3 px-4">状态</th>
+                                <th class="text-left py-3 px-4">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4">RT20260215001</td>
+                                <td class="py-3 px-4">FMXDM00081456</td>
+                                <td class="py-3 px-4">SH20260210001</td>
+                                <td class="py-3 px-4">2026-02-15 14:20</td>
+                                <td class="py-3 px-4">张三</td>
+                                <td class="py-3 px-4">ICT71125CA</td>
+                                <td class="py-3 px-4">血栓抽吸导管</td>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">质量问题</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">待审核</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-admin-primary hover:underline mr-2" onclick="showReturnAuditModal(1)">审核</button>
+                                    <button class="text-danger hover:underline" onclick="showReturnDetailModal(1)">详情</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+
+    <!-- 发货模态框 -->
+    <div id="shipmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">发货处理</h3>
+                <button onclick="closeShipmentModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <h4 id="modalProductName" class="text-md font-medium mb-2">血栓抽吸导管 (ICT71125CA)</h4>
+                <p class="text-sm text-gray-500 mb-4">包装：中 | 采购数量：3 | 待发货数量：3</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">发货数量</label>
+                    <input type="number" min="1" max="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入发货数量">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">物流单号</label>
+                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入物流单号">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">物流公司</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <option value="sf">顺丰速运</option>
+                        <option value="yt">圆通快递</option>
+                        <option value="yd">韵达快递</option>
+                        <option value="zt">中通快递</option>
+                        <option value="sto">申通快递</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">备注</label>
+                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" rows="3" placeholder="请输入备注信息"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button onclick="closeShipmentModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    取消
+                </button>
+                <button class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                    <i class="fa fa-check mr-1"></i> 确认发货
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 退货申请模态框 -->
+    <div id="returnModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">退货申请</h3>
+                <button onclick="closeReturnModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <h4 id="returnModalProductName" class="text-md font-medium mb-2">血栓抽吸导管 (ICT71125CA)</h4>
+                <p class="text-sm text-gray-500 mb-4">包装：中 | 采购数量：3 | 已发货数量：1</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">退货数量</label>
+                    <input type="number" min="1" max="1" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入退货数量">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">退货原因</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <option value="quality">质量问题</option>
+                        <option value="wrong">错发商品</option>
+                        <option value="cancel">客户取消</option>
+                        <option value="other">其他原因</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">退货说明</label>
+                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" rows="3" placeholder="请输入退货说明"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">上传凭证</label>
+                    <input type="file" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                    <p class="text-xs text-gray-500 mt-1">支持图片格式文件</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button onclick="closeReturnModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    取消
+                </button>
+                <button class="bg-warning text-white px-4 py-2 rounded-md hover:bg-warning/90 transition-colors">
+                    <i class="fa fa-check mr-1"></i> 提交申请
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 退货审核模态框 -->
+    <div id="returnAuditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">退货审核</h3>
+                <button onclick="closeReturnAuditModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="mb-4">
+                <h4 class="text-md font-medium mb-2">退货申请详情</h4>
+                <div class="space-y-2 text-sm">
+                    <p><span class="font-medium">退货ID：</span>RT20260215001</p>
+                    <p><span class="font-medium">申请时间：</span>2026-02-15 14:20</p>
+                    <p><span class="font-medium">申请人：</span>张三</p>
+                    <p><span class="font-medium">商品：</span>血栓抽吸导管 (ICT71125CA)</p>
+                    <p><span class="font-medium">退货数量：</span>1</p>
+                    <p><span class="font-medium">退货原因：</span>质量问题</p>
+                    <p><span class="font-medium">退货说明：</span>商品存在质量缺陷，无法正常使用</p>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">审核结果</label>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50">
+                        <option value="approve">同意退货</option>
+                        <option value="reject">拒绝退货</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">审核意见</label>
+                    <textarea class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" rows="3" placeholder="请输入审核意见"></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">退货收件信息</label>
+                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary/50" placeholder="请输入退货收件地址">
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button onclick="closeReturnAuditModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    取消
+                </button>
+                <button class="bg-admin-primary text-white px-4 py-2 rounded-md hover:bg-admin-primary/90 transition-colors">
+                    <i class="fa fa-check mr-1"></i> 确认审核
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 退货详情模态框 -->
+    <div id="returnDetailModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">退货详情</h3>
+                <button onclick="closeReturnDetailModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <h4 class="text-md font-medium mb-2">基本信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <p><span class="font-medium">退货ID：</span>RT20260215001</p>
+                        <p><span class="font-medium">申请时间：</span>2026-02-15 14:20</p>
+                        <p><span class="font-medium">申请人：</span>张三</p>
+                        <p><span class="font-medium">审核人：</span>李内勤</p>
+                        <p><span class="font-medium">审核时间：</span>2026-02-16 09:30</p>
+                        <p><span class="font-medium">审核结果：</span>同意退货</p>
+                        <p><span class="font-medium">状态：</span>待收件</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-md font-medium mb-2">商品信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <p><span class="font-medium">商品名称：</span>血栓抽吸导管</p>
+                        <p><span class="font-medium">商品规格：</span>ICT71125CA</p>
+                        <p><span class="font-medium">生产厂家：</span>瑞士迈道国际有限公司</p>
+                        <p><span class="font-medium">退货数量：</span>1</p>
+                        <p><span class="font-medium">退货原因：</span>质量问题</p>
+                        <p><span class="font-medium">退货说明：</span>商品存在质量缺陷，无法正常使用</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-md font-medium mb-2">退货收件信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <p><span class="font-medium">收件地址：</span>上海市浦东新区张江高科技园区博云路2号</p>
+                        <p><span class="font-medium">联系人：</span>李内勤</p>
+                        <p><span class="font-medium">联系电话：</span>13800138002</p>
+                        <p><span class="font-medium">物流公司：</span>顺丰速运</p>
+                        <p><span class="font-medium">物流单号：</span>SF9876543210</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-md font-medium mb-2">退款信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <p><span class="font-medium">退款金额：</span>¥7,194.00</p>
+                        <p><span class="font-medium">退款状态：</span>待退款</p>
+                        <p><span class="font-medium">发票冲正：</span>未处理</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 mt-6">
+                <button onclick="closeReturnDetailModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors">
+                    关闭
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // 侧边栏导航
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                this.classList.add('active');
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+
+        // 发货模态框
+        function showShipmentModal(productId) {
+            document.getElementById('shipmentModal').classList.remove('hidden');
+        }
+
+        function closeShipmentModal() {
+            document.getElementById('shipmentModal').classList.add('hidden');
+        }
+
+        // 退货模态框
+        function showReturnModal(productId) {
+            document.getElementById('returnModal').classList.remove('hidden');
+        }
+
+        function closeReturnModal() {
+            document.getElementById('returnModal').classList.add('hidden');
+        }
+
+        // 退货审核模态框
+        function showReturnAuditModal(returnId) {
+            document.getElementById('returnAuditModal').classList.remove('hidden');
+        }
+
+        function closeReturnAuditModal() {
+            document.getElementById('returnAuditModal').classList.add('hidden');
+        }
+
+        // 退货详情模态框
+        function showReturnDetailModal(returnId) {
+            document.getElementById('returnDetailModal').classList.remove('hidden');
+        }
+
+        function closeReturnDetailModal() {
+            document.getElementById('returnDetailModal').classList.add('hidden');
+        }
+
+
+
+
+
+        // 付款确认功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 找到确认到账按钮
+            const buttons = document.querySelectorAll('button');
+            let confirmPaymentBtn = null;
+            for (let button of buttons) {
+                if (button.textContent.includes('确认到账')) {
+                    confirmPaymentBtn = button;
+                    break;
+                }
+            }
+            
+            if (confirmPaymentBtn) {
+                confirmPaymentBtn.addEventListener('click', function() {
+                    const paymentAmountInput = document.querySelector('input[type="number"][placeholder="请输入到账金额"]');
+                    if (paymentAmountInput && paymentAmountInput.value > 0) {
+                        // 更新已到账金额
+                        const amountBoxes = document.querySelectorAll('.border.border-gray-200.rounded-lg.p-4');
+                        let orderAmount = 0;
+                        let receivedAmountElement = null;
+                        let unpaidAmountElement = null;
+                        let outboundAmountElement = null;
+                        
+                        for (let box of amountBoxes) {
+                            const label = box.querySelector('h4');
+                            const value = box.querySelector('p');
+                            if (label.textContent.includes('订单金额')) {
+                                orderAmount = parseFloat(value.textContent.replace('¥', '').replace(',', ''));
+                            } else if (label.textContent.includes('总到账金额')) {
+                                receivedAmountElement = value;
+                            } else if (label.textContent.includes('未付金额')) {
+                                unpaidAmountElement = value;
+                            } else if (label.textContent.includes('出库金额')) {
+                                outboundAmountElement = value;
+                            }
+                        }
+                        
+                        const paymentAmount = parseFloat(paymentAmountInput.value);
+                        const remainingAmount = orderAmount - paymentAmount;
+                        
+                        if (receivedAmountElement) {
+                            receivedAmountElement.textContent = '¥' + paymentAmount.toFixed(2);
+                        }
+                        
+                        if (unpaidAmountElement) {
+                            unpaidAmountElement.textContent = '¥' + remainingAmount.toFixed(2);
+                        }
+                        
+                        // 如果已付金额大于0，启用发货按钮
+                        if (paymentAmount > 0) {
+                            const shipButtons = document.querySelectorAll('button');
+                            shipButtons.forEach(button => {
+                                if (button.textContent.includes('发货')) {
+                                    button.disabled = false;
+                                    if (button.nextElementSibling && button.nextElementSibling.textContent.includes('需先付款')) {
+                                        button.nextElementSibling.style.display = 'none';
+                                    }
+                                }
+                            });
+                            
+                            // 更新出库金额
+                            if (outboundAmountElement) {
+                                outboundAmountElement.textContent = '¥' + paymentAmount.toFixed(2);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

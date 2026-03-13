@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同城生活 - 订单管理</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-primary/10 text-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-primary text-white;
+            }
+            .order-status-tab.active {
+                @apply text-primary border-b-2 border-primary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-primary text-lg font-bold">M</span>
+                    </div>
+                    <span class="font-bold text-white text-xl">同城生活 - 商家管理中心</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-bell text-white"></i>
+                    <span>消息</span>
+                </div>
+                <div class="flex items-center gap-2 relative group">
+                    <span>张亮麻辣烫</span>
+                    <div class="flex items-center gap-1 cursor-pointer">
+                        <span>张老板</span>
+                        <i class="fa fa-chevron-down text-xs"></i>
+                    </div>
+                    <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                        <div class="py-2">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">店铺设置</a>
+                            <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md h-[calc(100vh-64px)] fixed left-0 top-16 overflow-y-auto">
+            <div class="py-4">
+                <div class="px-4 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">店铺管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-home text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="merchant-shop-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-store text-xs"></i>
+                        </div>
+                        <span>店铺设置</span>
+                    </a>
+                    <a href="merchant-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-shopping-bag text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="merchant-orders.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-8 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">营销管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-promotions.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-gift text-xs"></i>
+                        </div>
+                        <span>促销活动</span>
+                    </a>
+                    <a href="merchant-coupons.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-ticket text-xs"></i>
+                        </div>
+                        <span>优惠券管理</span>
+                    </a>
+                </div>
+                <div class="px-4 mt-8 mb-4">
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase">财务管理</h3>
+                </div>
+                <div class="mt-2">
+                    <a href="merchant-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务对账</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <!-- 订单状态标签 -->
+            <div class="bg-white rounded-lg shadow-sm mb-4">
+                <div class="flex items-center border-b">
+                    <a href="#" class="order-status-tab active px-6 py-3 text-sm font-medium">全部订单</a>
+                    <a href="#" class="order-status-tab px-6 py-3 text-sm font-medium text-gray-500">待处理</a>
+                    <a href="#" class="order-status-tab px-6 py-3 text-sm font-medium text-gray-500">配送中</a>
+                    <a href="#" class="order-status-tab px-6 py-3 text-sm font-medium text-gray-500">已完成</a>
+                    <a href="#" class="order-status-tab px-6 py-3 text-sm font-medium text-gray-500">退款/售后</a>
+                </div>
+            </div>
+
+            <!-- 搜索和筛选 -->
+            <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                <div class="flex items-center gap-4">
+                    <div class="flex-1 relative">
+                        <input type="text" placeholder="搜索订单号/客户姓名/手机号" class="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:border-primary">
+                        <i class="fa fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <input type="date" class="border rounded-md px-4 py-2 text-sm">
+                    <span class="text-gray-400">至</span>
+                    <input type="date" class="border rounded-md px-4 py-2 text-sm">
+                    <button class="bg-primary text-white px-6 py-2 rounded-md text-sm">搜索</button>
+                </div>
+            </div>
+
+            <!-- 订单列表 -->
+            <div class="bg-white rounded-lg shadow-sm">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="text-left py-3 px-4 font-medium">订单信息</th>
+                                <th class="text-left py-3 px-4 font-medium">客户</th>
+                                <th class="text-left py-3 px-4 font-medium">订单金额</th>
+                                <th class="text-left py-3 px-4 font-medium">实付金额</th>
+                                <th class="text-left py-3 px-4 font-medium">订单状态</th>
+                                <th class="text-left py-3 px-4 font-medium">下单时间</th>
+                                <th class="text-left py-3 px-4 font-medium">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t">
+                                <td class="py-3 px-4">
+                                    <div class="font-medium">20260310001</div>
+                                    <div class="text-xs text-gray-500">经典麻辣烫 x2</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>张三</div>
+                                    <div class="text-xs text-gray-500">138****5678</div>
+                                </td>
+                                <td class="py-3 px-4">¥61.6</td>
+                                <td class="py-3 px-4">¥51.6</td>
+                                <td class="py-3 px-4">
+                                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">待处理</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>2026-03-10</div>
+                                    <div class="text-xs text-gray-500">10:30</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-primary hover:underline mr-2">处理</button>
+                                    <button class="text-gray-500 hover:underline">详情</button>
+                                </td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="py-3 px-4">
+                                    <div class="font-medium">20260309002</div>
+                                    <div class="text-xs text-gray-500">冰柠檬茶 x1, 蔬菜沙拉 x1</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>李四</div>
+                                    <div class="text-xs text-gray-500">139****1234</div>
+                                </td>
+                                <td class="py-3 px-4">¥36.6</td>
+                                <td class="py-3 px-4">¥26.6</td>
+                                <td class="py-3 px-4">
+                                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs">配送中</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>2026-03-09</div>
+                                    <div class="text-xs text-gray-500">18:45</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-primary hover:underline mr-2">查看</button>
+                                    <button class="text-gray-500 hover:underline">详情</button>
+                                </td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="py-3 px-4">
+                                    <div class="font-medium">20260309001</div>
+                                    <div class="text-xs text-gray-500">川味冒菜 x1</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>王五</div>
+                                    <div class="text-xs text-gray-500">137****5678</div>
+                                </td>
+                                <td class="py-3 px-4">¥28.8</td>
+                                <td class="py-3 px-4">¥28.8</td>
+                                <td class="py-3 px-4">
+                                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">已完成</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>2026-03-09</div>
+                                    <div class="text-xs text-gray-500">12:20</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-gray-500 hover:underline">详情</button>
+                                </td>
+                            </tr>
+                            <tr class="border-t">
+                                <td class="py-3 px-4">
+                                    <div class="font-medium">20260308005</div>
+                                    <div class="text-xs text-gray-500">经典麻辣烫 x1</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>赵六</div>
+                                    <div class="text-xs text-gray-500">136****8901</div>
+                                </td>
+                                <td class="py-3 px-4">¥25.8</td>
+                                <td class="py-3 px-4">¥20.8</td>
+                                <td class="py-3 px-4">
+                                    <span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs">退款中</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div>2026-03-08</div>
+                                    <div class="text-xs text-gray-500">20:10</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-primary hover:underline mr-2">处理</button>
+                                    <button class="text-gray-500 hover:underline">详情</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 分页 -->
+                <div class="flex items-center justify-between px-4 py-3 border-t">
+                    <div class="text-sm text-gray-500">共 128 条记录，第 1/13 页</div>
+                    <div class="flex items-center gap-2">
+                        <button class="border rounded px-3 py-1 text-sm text-gray-500">上一页</button>
+                        <button class="border rounded px-3 py-1 text-sm bg-primary text-white">1</button>
+                        <button class="border rounded px-3 py-1 text-sm text-gray-500">2</button>
+                        <button class="border rounded px-3 py-1 text-sm text-gray-500">3</button>
+                        <span class="text-gray-400">...</span>
+                        <button class="border rounded px-3 py-1 text-sm text-gray-500">13</button>
+                        <button class="border rounded px-3 py-1 text-sm text-gray-500">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- 脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 导航切换
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 订单状态标签切换
+            const statusTabs = document.querySelectorAll('.order-status-tab');
+            statusTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    statusTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

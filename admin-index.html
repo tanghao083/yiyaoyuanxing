@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台 - 易润健医疗订货系统</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                        'admin-primary': '#059669',
+                        'admin-secondary': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <!-- 通用交互逻辑 -->
+    <script src="common.js"></script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-admin-primary/10 text-admin-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-admin-primary/20 text-admin-primary font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-admin-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-admin-primary font-bold">A</span>
+                    </div>
+                    <h1 class="text-xl font-bold">易润健医疗订货系统 - 管理后台</h1>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-bell text-white"></i>
+                        <span>通知</span>
+                    </div>
+                    <div class="flex items-center gap-2 relative group">
+                        <span>管理员</span>
+                        <div class="flex items-center gap-1 cursor-pointer">
+                            <i class="fa fa-chevron-down text-xs"></i>
+                        </div>
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                            <div class="py-2">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                                <a href="admin-login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-supplier-certifications.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-certificate text-xs"></i>
+                        </div>
+                        <span>供货商资质管理</span>
+                    </a>
+
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <!-- 统计卡片 -->
+            <section class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">统计概览</h2>
+                </div>
+                
+
+                <div class="grid grid-cols-4 gap-4">
+                    <a href="admin-users.html" class="bg-white p-4 rounded-lg shadow-card hover:shadow-lg transition-shadow cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm text-gray-600">总用户数</h3>
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fa fa-users text-admin-primary"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold">128</p>
+                    </a>
+                    <a href="admin-inventory.html" class="bg-white p-4 rounded-lg shadow-card hover:shadow-lg transition-shadow cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm text-gray-600">总货品值</h3>
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fa fa-cubes text-blue-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold">¥1,258,690</p>
+                    </a>
+                    <a href="admin-monthly-orders.html" class="bg-white p-4 rounded-lg shadow-card hover:shadow-lg transition-shadow cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm text-gray-600">月订单数</h3>
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fa fa-file-text text-purple-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold">324</p>
+                    </a>
+                    <a href="admin-monthly-sales.html" class="bg-white p-4 rounded-lg shadow-card hover:shadow-lg transition-shadow cursor-pointer transform hover:-translate-y-1 transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm text-gray-600">月销售额</h3>
+                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fa fa-money text-yellow-600"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-bold">¥286,542</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 销售趋势图表 -->
+            <section class="mb-6">
+                <div class="bg-white rounded-lg shadow-card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-semibold">销售趋势</h3>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 活跃用户和商品销售Top3 -->
+            <div class="grid grid-cols-3 gap-6 mb-6">
+                <!-- 活跃用户Top3 -->
+                <section class="col-span-1">
+                    <div class="bg-white rounded-lg shadow-card p-6 h-full">
+                        <h3 class="text-lg font-semibold mb-4">活跃用户 Top 3</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-md">
+                                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 font-bold">1</div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium">河北xxx医疗器械有限公司</h4>
+                                    <p class="text-xs text-gray-600">联系人: 张三</p>
+                                    <p class="text-xs text-admin-primary">月订单: 28</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-md">
+                                <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold">2</div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium">北京xxx医疗科技有限公司</h4>
+                                    <p class="text-xs text-gray-600">联系人: 李四</p>
+                                    <p class="text-xs text-admin-primary">月订单: 24</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-md">
+                                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">3</div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium">上海xxx医疗器械有限公司</h4>
+                                    <p class="text-xs text-gray-600">联系人: 王五</p>
+                                    <p class="text-xs text-admin-primary">月订单: 21</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="admin-users.html" class="mt-4 block text-center text-sm text-admin-primary hover:underline">查看全部</a>
+                    </div>
+                </section>
+
+                <!-- 商品销售Top3 -->
+                <section class="col-span-2">
+                    <div class="bg-white rounded-lg shadow-card p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold">商品销售 Top 3</h3>
+                            <a href="admin-products.html" class="text-sm text-admin-primary hover:underline">查看全部</a>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 font-bold">1</div>
+                                    <div>
+                                        <h4 class="font-medium">血栓抽吸导管</h4>
+                                        <p class="text-xs text-gray-600">ICT71125CA | 6F 125cm</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-admin-primary">¥38,400</p>
+                                    <p class="text-xs text-gray-600">月销量: 128</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border-b border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-gray-600 font-bold">2</div>
+                                    <div>
+                                        <h4 class="font-medium">颅内支架</h4>
+                                        <p class="text-xs text-gray-600">ENCR402300 | 4.0x23mm</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-admin-primary">¥34,400</p>
+                                    <p class="text-xs text-gray-600">月销量: 86</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold">3</div>
+                                    <div>
+                                        <h4 class="font-medium">冠状动脉支架</h4>
+                                        <p class="text-xs text-gray-600">STENT001 | 3.0x18mm</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-medium text-admin-primary">¥31,200</p>
+                                    <p class="text-xs text-gray-600">月销量: 156</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 系统状态 -->
+            <section>
+                <div class="bg-white rounded-lg shadow-card p-6">
+                    <h3 class="text-lg font-semibold mb-4">系统状态</h3>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fa fa-check text-green-600"></i>
+                            </div>
+                            <h4 class="font-medium">服务器状态</h4>
+                            <p class="text-sm text-green-600">正常运行</p>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fa fa-database text-blue-600"></i>
+                            </div>
+                            <h4 class="font-medium">数据库</h4>
+                            <p class="text-sm text-blue-600">连接正常</p>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fa fa-cloud text-purple-600"></i>
+                            </div>
+                            <h4 class="font-medium">云存储</h4>
+                            <p class="text-sm text-purple-600">可用空间 85%</p>
+                        </div>
+                        <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                <i class="fa fa-shield text-yellow-600"></i>
+                            </div>
+                            <h4 class="font-medium">安全状态</h4>
+                            <p class="text-sm text-yellow-600">无异常</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <script>
+        // 侧边栏导航
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                this.classList.add('active');
+                const href = this.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+
+
+
+        // 销售趋势图表
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+                    datasets: [{
+                        label: '销售额',
+                        data: [180000, 210000, 195000, 230000, 250000, 270000, 290000, 260000, 300000, 320000, 310000, 350000],
+                        borderColor: '#059669',
+                        backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: '订单数',
+                        data: [200, 220, 210, 240, 250, 270, 280, 260, 290, 310, 300, 330],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

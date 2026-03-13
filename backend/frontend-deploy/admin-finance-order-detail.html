@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单财务详情 - 易润健医疗订货系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 页面加载时获取订单ID
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+            if (orderId) {
+                document.getElementById('orderIdDisplay').textContent = 'FMXDM000' + orderId;
+            }
+        };
+
+        // 显示添加到账记录表单
+        function showAddPaymentForm() {
+            document.getElementById('paymentForm').classList.remove('hidden');
+        }
+
+        // 隐藏添加到账记录表单
+        function hideAddPaymentForm() {
+            document.getElementById('paymentForm').classList.add('hidden');
+        }
+
+        // 显示添加发票记录表单
+        function showAddInvoiceForm() {
+            document.getElementById('invoiceForm').classList.remove('hidden');
+        }
+
+        // 显示添加发票记录表单并填充发货ID
+        function showAddInvoiceFormWithShipment(shipmentId) {
+            document.getElementById('shipmentId').value = shipmentId;
+            document.getElementById('invoiceForm').classList.remove('hidden');
+        }
+
+        // 隐藏添加发票记录表单
+        function hideAddInvoiceForm() {
+            document.getElementById('invoiceForm').classList.add('hidden');
+        }
+
+        // 提交到账记录
+        function submitPayment() {
+            const amount = document.getElementById('paymentAmount').value;
+            const date = document.getElementById('paymentDate').value;
+            const paymentMethod = document.querySelector('select').value;
+            const notes = document.getElementById('paymentNotes').value;
+
+            if (amount && date) {
+                // 创建新的到账记录行
+                const tbody = document.querySelector('#paymentTable tbody');
+                const newRow = document.createElement('tr');
+                newRow.className = 'divide-y divide-gray-200';
+                
+                // 格式化金额
+                const formattedAmount = '¥' + parseFloat(amount).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                
+                // 获取付款方式文本
+                let paymentMethodText = '银行转账';
+                if (paymentMethod === 'alipay') paymentMethodText = '支付宝';
+                if (paymentMethod === 'wechat') paymentMethodText = '微信支付';
+                if (paymentMethod === 'other') paymentMethodText = '其他';
+                
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 text-sm">${date}</td>
+                    <td class="px-4 py-3 text-sm font-medium text-green-600">${formattedAmount}</td>
+                    <td class="px-4 py-3 text-sm">${paymentMethodText}</td>
+                    <td class="px-4 py-3 text-sm">${notes || '-'}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <a href="#" class="text-admin-primary hover:underline mr-2">编辑</a>
+                        <a href="#" class="text-red-600 hover:underline">删除</a>
+                    </td>
+                `;
+                
+                // 添加到表格
+                tbody.appendChild(newRow);
+                
+                alert('到账记录添加成功！');
+                hideAddPaymentForm();
+                // 重置表单
+                document.getElementById('paymentForm').reset();
+            } else {
+                alert('请填写金额和日期');
+            }
+        }
+
+        // 提交发票记录
+        function submitInvoice() {
+            const amount = document.getElementById('invoiceAmount').value;
+            const date = document.getElementById('invoiceDate').value;
+            const invoiceNumber = document.getElementById('invoiceNumber').value;
+            const shipmentId = document.getElementById('shipmentId').value;
+            const invoiceType = document.querySelectorAll('#invoiceForm select')[0].value;
+
+            if (amount && date && invoiceNumber && shipmentId) {
+                // 创建新的发票记录行
+                const tbody = document.querySelector('#invoiceTable tbody');
+                const newRow = document.createElement('tr');
+                newRow.className = 'divide-y divide-gray-200';
+                
+                // 格式化金额
+                const formattedAmount = '¥' + parseFloat(amount).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                
+                // 获取发票类型文本
+                let invoiceTypeText = '增值税专用发票';
+                if (invoiceType === 'ordinary') invoiceTypeText = '增值税普通发票';
+                if (invoiceType === 'other') invoiceTypeText = '其他发票';
+                
+                newRow.innerHTML = `
+                    <td class="px-4 py-3 text-sm">${invoiceNumber}</td>
+                    <td class="px-4 py-3 text-sm">${shipmentId}</td>
+                    <td class="px-4 py-3 text-sm">${date}</td>
+                    <td class="px-4 py-3 text-sm font-medium text-green-600">${formattedAmount}</td>
+                    <td class="px-4 py-3 text-sm">${invoiceTypeText}</td>
+                    <td class="px-4 py-3 text-sm">
+                        <a href="#" class="text-admin-primary hover:underline mr-2">详情</a>
+                        <a href="#" class="text-gray-600 hover:underline mr-2">下载</a>
+                        <a href="#" class="text-red-600 hover:underline">删除</a>
+                    </td>
+                `;
+                
+                // 添加到表格
+                tbody.appendChild(newRow);
+                
+                alert('发票记录添加成功！');
+                hideAddInvoiceForm();
+                // 重置表单
+                document.getElementById('invoiceForm').reset();
+            } else {
+                alert('请填写金额、日期、发票号和发货ID');
+            }
+        }
+    </script>
+    <style>
+        .sidebar-item {
+            @apply flex items-center p-2 rounded-md hover:bg-gray-100 transition-colors duration-200;
+        }
+        .sidebar-item.active {
+            @apply bg-admin-primary text-white;
+        }
+        .sidebar-item.active:hover {
+            @apply bg-admin-primary text-white;
+        }
+        .shadow-card {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        :root {
+            --admin-primary: #165DFF;
+        }
+        .bg-admin-primary {
+            background-color: var(--admin-primary);
+        }
+        .text-admin-primary {
+            color: var(--admin-primary);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="flex">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md fixed h-full overflow-y-auto">
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-4">管理菜单</h2>
+                <div class="space-y-2">
+                    <a href="admin-index.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-dashboard text-xs"></i>
+                        </div>
+                        <span>仪表盘</span>
+                    </a>
+                    <a href="admin-users.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-users text-xs"></i>
+                        </div>
+                        <span>用户管理</span>
+                    </a>
+                    <a href="admin-products.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cubes text-xs"></i>
+                        </div>
+                        <span>商品管理</span>
+                    </a>
+                    <a href="admin-orders.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单管理</span>
+                    </a>
+                    <a href="admin-inventory.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存管理</span>
+                    </a>
+                    <a href="admin-finance.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-money text-xs"></i>
+                        </div>
+                        <span>财务管理</span>
+                    </a>
+                    <a href="admin-settings.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-admin-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-cog text-xs"></i>
+                        </div>
+                        <span>系统设置</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <div class="flex-1 ml-64 p-6">
+            <!-- 顶部导航栏 -->
+            <header class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800">订单财务详情</h1>
+                    <p class="text-gray-600 mt-1">查看和管理订单的财务记录</p>
+                </div>
+                <div class="relative">
+                    <button class="flex items-center space-x-2">
+                        <img src="https://via.placeholder.com/32" alt="用户头像" class="w-8 h-8 rounded-full">
+                        <span class="text-gray-700">管理员</span>
+                        <i class="fa fa-angle-down text-gray-500"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- 订单基本信息 -->
+            <section class="mb-6">
+                <h2 class="text-lg font-semibold mb-4">订单信息</h2>
+                <div class="bg-white rounded-lg shadow-card p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">订单号</p>
+                            <p class="text-lg font-medium" id="orderIdDisplay">FMXDM00081456</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">客户</p>
+                            <p class="text-lg font-medium">河北xxx医疗器械有限公司</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">订单日期</p>
+                            <p class="text-lg font-medium">2026-03-01</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">订单金额</p>
+                            <p class="text-lg font-medium text-admin-primary">¥21,582.00</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">总到账金额</p>
+                            <p class="text-lg font-medium text-green-600">¥21,582.00</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">未到账金额</p>
+                            <p class="text-lg font-medium text-red-600">¥0.00</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">到账率</p>
+                            <p class="text-lg font-medium text-green-600">100%</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">已开发票金额</p>
+                            <p class="text-lg font-medium text-green-600">¥21,582.00</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">未开发票金额</p>
+                            <p class="text-lg font-medium text-red-600">¥0.00</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">开票率</p>
+                            <p class="text-lg font-medium text-green-600">100%</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 到账记录 -->
+            <section class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">到账记录</h2>
+                    <button onclick="showAddPaymentForm()" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+                        <i class="fa fa-plus mr-2"></i>添加到账记录
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                    <table id="paymentTable" class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">到账日期</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">到账金额</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">付款方式</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">备注</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-4 py-3 text-sm">2026-03-01</td>
+                                <td class="px-4 py-3 text-sm font-medium text-green-600">¥21,582.00</td>
+                                <td class="px-4 py-3 text-sm">银行转账</td>
+                                <td class="px-4 py-3 text-sm">全额到账</td>
+                                <td class="px-4 py-3 text-sm">
+                                    <a href="#" class="text-admin-primary hover:underline mr-2">编辑</a>
+                                    <a href="#" class="text-red-600 hover:underline">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 添加到账记录表单 -->
+                <div id="paymentForm" class="bg-white rounded-lg shadow-card p-6 mt-4 hidden">
+                    <h3 class="text-md font-semibold mb-4">添加到账记录</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">到账金额</label>
+                            <input type="number" id="paymentAmount" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">到账日期</label>
+                            <input type="date" id="paymentDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">付款方式</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                                <option value="bank">银行转账</option>
+                                <option value="alipay">支付宝</option>
+                                <option value="wechat">微信支付</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">备注</label>
+                            <input type="text" id="paymentNotes" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-4 space-x-2">
+                        <button onclick="hideAddPaymentForm()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                            取消
+                        </button>
+                        <button onclick="submitPayment()" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors">
+                            确认添加
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 发货记录 -->
+            <section class="mb-6">
+                <h2 class="text-lg font-semibold mb-4">发货记录</h2>
+                <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发货ID</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发货时间</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发货人</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">商品规格</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">商品名称</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发货数量</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">物流单号</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">状态</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-4 py-3 text-sm">SH20260210001</td>
+                                <td class="px-4 py-3 text-sm">2026-02-10 10:30</td>
+                                <td class="px-4 py-3 text-sm">李内勤</td>
+                                <td class="px-4 py-3 text-sm">ICT71125CA</td>
+                                <td class="px-4 py-3 text-sm">血栓抽吸导管</td>
+                                <td class="px-4 py-3 text-sm">1</td>
+                                <td class="px-4 py-3 text-sm">SF1234567890</td>
+                                <td class="px-4 py-3 text-sm">
+                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">已发货</span>
+                                </td>
+                                <td class="px-4 py-3 text-sm">
+                                    <button onclick="showAddInvoiceFormWithShipment('SH20260210001')" class="text-blue-600 hover:underline">
+                                        <i class="fa fa-file-text mr-1"></i> 开票
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 发票记录 -->
+            <section class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">发票记录</h2>
+                    <button onclick="showAddInvoiceForm()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                        <i class="fa fa-plus mr-2"></i>添加发票记录
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                    <table id="invoiceTable" class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发票号</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发货ID</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">开票日期</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">开票金额</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">发票类型</th>
+                                <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-4 py-3 text-sm">FP20260301001</td>
+                                <td class="px-4 py-3 text-sm">SH20260210001</td>
+                                <td class="px-4 py-3 text-sm">2026-03-01</td>
+                                <td class="px-4 py-3 text-sm font-medium text-green-600">¥7,194.00</td>
+                                <td class="px-4 py-3 text-sm">增值税专用发票</td>
+                                <td class="px-4 py-3 text-sm">
+                                    <a href="#" class="text-admin-primary hover:underline mr-2">详情</a>
+                                    <a href="#" class="text-gray-600 hover:underline mr-2">下载</a>
+                                    <a href="#" class="text-red-600 hover:underline">删除</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 添加发票记录表单 -->
+                <div id="invoiceForm" class="bg-white rounded-lg shadow-card p-6 mt-4 hidden">
+                    <h3 class="text-md font-semibold mb-4">添加发票记录</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">订单编码</label>
+                            <input type="text" id="orderCode" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary" value="FMXDM00081456" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">发货ID</label>
+                            <input type="text" id="shipmentId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary" placeholder="请输入发货ID">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">发票号</label>
+                            <input type="text" id="invoiceNumber" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">开票日期</label>
+                            <input type="date" id="invoiceDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">开票金额</label>
+                            <input type="number" id="invoiceAmount" step="0.01" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">发票类型</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-admin-primary">
+                                <option value="special">增值税专用发票</option>
+                                <option value="ordinary">增值税普通发票</option>
+                                <option value="other">其他发票</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-4 space-x-2">
+                        <button onclick="hideAddInvoiceForm()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                            取消
+                        </button>
+                        <button onclick="submitInvoice()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+                            确认添加
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 操作按钮 -->
+            <div class="flex justify-start space-x-4">
+                <a href="admin-finance.html" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                    <i class="fa fa-arrow-left mr-2"></i>返回列表
+                </a>
+                <a href="admin-order-detail.html" class="px-4 py-2 bg-admin-primary text-white rounded-md hover:bg-opacity-90 transition-colors">
+                    <i class="fa fa-file-text mr-2"></i>查看订单详情
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

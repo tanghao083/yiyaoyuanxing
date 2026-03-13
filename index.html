@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>易润健医疗订货系统 - 首页</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的Tailwind配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#60A5FA',
+                        neutral: '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                        'success': '#10B981',
+                        'warning': '#F59E0B',
+                        'danger': '#EF4444',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .shadow-card {
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            }
+            .sidebar-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-lg transition-all-300;
+            }
+            .sidebar-item:hover {
+                @apply bg-primary/10 text-primary;
+            }
+            .sidebar-item.active {
+                @apply bg-primary text-white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <header class="bg-primary text-white shadow-md">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-pink-300 rounded-full flex items-center justify-center">
+                        <span class="text-white text-lg font-bold">M</span>
+                    </div>
+                    <span class="font-bold text-white text-xl">易润健医疗订货系统</span>
+                </div>
+            </div>
+            <div class="flex-1 max-w-md mx-8">
+                <div class="relative">
+                    <input type="text" placeholder="输入商品名称或规格" class="w-full pl-4 pr-10 py-2 bg-white text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-white/50">
+                    <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-question-circle text-white"></i>
+                    <span>帮助中心</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa fa-bell text-white"></i>
+                    <span>我的消息</span>
+                </div>
+                <div class="flex items-center gap-2 relative group">
+                    <span id="companyName">河北xxx医疗器械有限公司</span>
+                    <div class="flex items-center gap-1 cursor-pointer">
+                        <span id="username">孟大卫</span>
+                        <i class="fa fa-chevron-down text-xs"></i>
+                    </div>
+                    <!-- 下拉菜单 -->
+                    <div class="absolute right-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md hidden group-hover:block z-50">
+                        <div class="py-2">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">个人信息</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">账户安全</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">资质管理</a>
+                            <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">退出登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 主内容区域 -->
+    <div class="flex flex-1">
+        <!-- 左侧菜单栏 -->
+        <aside class="w-64 bg-white shadow-md h-[calc(100vh-64px)] fixed left-0 top-16 overflow-y-auto">
+            <div class="py-4">
+                <div class="mt-2">
+                    <a href="index.html" class="sidebar-item active">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-home text-xs"></i>
+                        </div>
+                        <span>首页</span>
+                    </a>
+                    <a href="order.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-search text-xs"></i>
+                        </div>
+                        <span>商品搜索</span>
+                    </a>
+                    <a href="order-center.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-file-text text-xs"></i>
+                        </div>
+                        <span>订单中心</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-shopping-cart text-xs"></i>
+                        </div>
+                        <span>我的购物车</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-list text-xs"></i>
+                        </div>
+                        <span>我的订单</span>
+                    </a>
+                    <a href="order.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-plus-circle text-xs"></i>
+                        </div>
+                        <span>创建订单</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-exchange text-xs"></i>
+                        </div>
+                        <span>流向管理</span>
+                    </a>
+                    <a href="#" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-archive text-xs"></i>
+                        </div>
+                        <span>库存查询</span>
+                    </a>
+                    <a href="customer-service.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-headphones text-xs"></i>
+                        </div>
+                        <span>客户服务</span>
+                    </a>
+                    <a href="user-qualification.html" class="sidebar-item">
+                        <div class="w-6 h-6 bg-primary rounded flex items-center justify-center text-white">
+                            <i class="fa fa-id-card text-xs"></i>
+                        </div>
+                        <span>资质管理</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        <!-- 右侧内容区域 -->
+        <main class="flex-1 ml-64 p-6">
+            <!-- 快速工具 -->
+            <section class="mb-6">
+                <h2 class="text-lg font-semibold mb-4">快速工具</h2>
+                <div class="grid grid-cols-5 gap-4">
+                    <a href="order.html" class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-shopping-cart text-primary text-xl"></i>
+                        </div>
+                        <span class="text-sm">创建订单</span>
+                    </a>
+                    <div class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-file-excel-o text-green-600 text-xl"></i>
+                        </div>
+                        <span class="text-sm">快速下单</span>
+                    </div>
+                    <a href="cart.html" class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-list text-yellow-600 text-xl"></i>
+                        </div>
+                        <span class="text-sm">我的购物车</span>
+                    </a>
+                    <div class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-wallet text-purple-600 text-xl"></i>
+                        </div>
+                        <span class="text-sm">可用余额</span>
+                        <span class="text-sm font-bold text-primary mt-1">¥171.00</span>
+                    </div>
+                    <a href="user-qualification.html" class="bg-white p-4 rounded-lg shadow-card flex flex-col items-center hover:shadow-lg transition-shadow">
+                        <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-2">
+                            <i class="fa fa-id-card text-pink-600 text-xl"></i>
+                        </div>
+                        <span class="text-sm">资质管理</span>
+                    </a>
+                </div>
+            </section>
+            <!-- 重要提醒和订单状态 -->
+            <div class="grid grid-cols-3 gap-6 mb-6">
+                <!-- 重要提醒 -->
+                <div class="bg-white p-4 rounded-lg shadow-card">
+                    <h3 class="text-md font-semibold mb-3">重要提醒</h3>
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa fa-exclamation-triangle text-warning"></i>
+                        <span class="text-sm">提醒事项共计1条</span>
+                    </div>
+                    <div class="text-sm text-gray-600 mb-2">
+                        您的：ENTERPRISE II 内支架、CEREBASE DA 远端保护导管已经过期，请及时更新。
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa fa-clock-o text-gray-400"></i>
+                        <span class="text-xs text-gray-500">2026-02-16 10:30</span>
+                    </div>
+                </div>
+                <!-- 订单状态 -->
+                <div class="bg-white p-4 rounded-lg shadow-card col-span-2">
+                    <h3 class="text-md font-semibold mb-3">订单状态</h3>
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary mb-1">0</div>
+                            <div class="text-sm">已提交</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary mb-1">0</div>
+                            <div class="text-sm">部分部分处理</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary mb-1">0</div>
+                            <div class="text-sm">全部部分处理</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-primary mb-1">5</div>
+                            <div class="text-sm">全部订单</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 订单列表 -->
+            <section>
+                <h2 class="text-lg font-semibold mb-4">订单列表</h2>
+                <div class="bg-white rounded-lg shadow-card overflow-hidden">
+                    <div class="p-4 border-b">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">下单时间：2026-02-16 10:20</span>
+                                <span class="text-sm">单号：PMXDM00081456</span>
+                                <span class="text-sm">状态：已完成</span>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span class="text-sm">订单金额：¥21,532.00</span>
+                                <span class="text-sm">出库金额：¥20,412.00</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <a href="#" class="text-sm text-primary hover:underline">收起</a>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b">
+                                    <th class="text-left py-2">商品规格</th>
+                                    <th class="text-left py-2">商品名称</th>
+                                    <th class="text-left py-2">生产厂家</th>
+                                    <th class="text-left py-2">分类</th>
+                                    <th class="text-left py-2">包装</th>
+                                    <th class="text-left py-2">单价</th>
+                                    <th class="text-left py-2">订单数量</th>
+                                    <th class="text-left py-2">已发货</th>
+                                    <th class="text-left py-2">未发货</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b">
+                                    <td class="py-2">规格1</td>
+                                    <td class="py-2">商品名称1</td>
+                                    <td class="py-2">生产厂家1</td>
+                                    <td class="py-2">CNV</td>
+                                    <td class="py-2">1</td>
+                                    <td class="py-2">¥100.0000</td>
+                                    <td class="py-2">10</td>
+                                    <td class="py-2">10</td>
+                                    <td class="py-2">0</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2">规格2</td>
+                                    <td class="py-2">商品名称2</td>
+                                    <td class="py-2">生产厂家2</td>
+                                    <td class="py-2">三鑫</td>
+                                    <td class="py-2">1</td>
+                                    <td class="py-2">¥200.0000</td>
+                                    <td class="py-2">5</td>
+                                    <td class="py-2">5</td>
+                                    <td class="py-2">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- 脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查用户是否登录
+            checkLoginStatus();
+            
+            // 加载用户信息
+            loadUserInfo();
+            
+            // 加载订单状态
+            loadOrderStatus();
+            
+            // 加载订单列表
+            loadOrderList();
+            
+            // 导航切换
+            const sidebarItems = document.querySelectorAll('.sidebar-item');
+            
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // 移除所有活动状态
+                    sidebarItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // 添加活动状态
+                    this.classList.add('active');
+                    
+                    // 如果链接有href且不是#，则执行跳转
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
+                });
+            });
+            
+            // 退出登录
+            document.querySelector('a[href="login.html"]').addEventListener('click', function(e) {
+                e.preventDefault();
+                logout();
+            });
+        });
+        
+        // 检查登录状态
+        function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // 加载用户信息
+        async function loadUserInfo() {
+            try {
+                const userStr = localStorage.getItem('user');
+                if (userStr) {
+                    const user = JSON.parse(userStr);
+                    // 显示用户信息
+                    const companyNameElement = document.getElementById('companyName');
+                    const usernameElement = document.getElementById('username');
+                    if (companyNameElement) {
+                        companyNameElement.textContent = user.companyName || '河北xxx医疗器械有限公司';
+                    }
+                    if (usernameElement) {
+                        usernameElement.textContent = user.username || '孟大卫';
+                    }
+                }
+            } catch (error) {
+                console.error('加载用户信息失败:', error);
+            }
+        }
+        
+        // 加载订单状态
+        async function loadOrderStatus() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3002/api/orders', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const orders = await response.json();
+                    // 计算订单状态
+                    const statusCounts = {
+                        pending: 0,
+                        processing: 0,
+                        completed: 0,
+                        total: orders.length
+                    };
+                    
+                    orders.forEach(order => {
+                        if (order.status === 'pending') statusCounts.pending++;
+                        else if (order.status === 'processing') statusCounts.processing++;
+                        else if (order.status === 'completed') statusCounts.completed++;
+                    });
+                    
+                    // 更新订单状态显示
+                    const statusElements = document.querySelectorAll('.grid.grid-cols-4.gap-4 .text-center');
+                    if (statusElements.length >= 4) {
+                        statusElements[0].querySelector('.text-2xl').textContent = statusCounts.pending;
+                        statusElements[1].querySelector('.text-2xl').textContent = statusCounts.processing;
+                        statusElements[2].querySelector('.text-2xl').textContent = statusCounts.processing;
+                        statusElements[3].querySelector('.text-2xl').textContent = statusCounts.total;
+                    }
+                }
+            } catch (error) {
+                console.error('加载订单状态失败:', error);
+            }
+        }
+        
+        // 加载订单列表
+        async function loadOrderList() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3002/api/orders', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const orders = await response.json();
+                    // 这里可以根据需要更新订单列表
+                    console.log('订单列表:', orders);
+                }
+            } catch (error) {
+                console.error('加载订单列表失败:', error);
+            }
+        }
+        
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

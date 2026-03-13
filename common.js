@@ -527,3 +527,4 @@ function initPage() {
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', initPage);
 "// Test deployment" 
+"// Test GitHub deployment" 
